@@ -116,14 +116,15 @@ def find_orfs(seqfilename, gcfilename, spath, sizep, scodon, ecodon):
 								i = i + 1
 								break
 							orf_counter = orf_counter + 1
-							i = end + 1
-							NOFH.write("%s_ORF%s\n%s\n" % (name, \
-							orf_counter, seq))
+							i = i + (((end + 1) - i) / 4)
+							NOFH.write("%s_ORF%s|len_%s\n%s\n" % (name, \
+							orf_counter, len(seq), seq))
 							pseq = translate(seq, gc)
-							POFH.write("%s_ORF%s\n%s\n" % (name, orf_counter,\
-							pseq))
-							FOFH.write("%s_ORF%s\t%s\t%s\t%s\t%s\n" % (name, \
-							orf_counter, chrname, start, end, seqfilename))
+							POFH.write("%s_ORF%s|len_%s\n%s\n" % (name, \
+							orf_counter, len(pseq), pseq))
+							FOFH.write("%s_ORF%s|len_%s\t%s\t%s\t%s\t%s\n" %\
+							 (name, orf_counter, len(seq), chrname, start, end,\
+							 seqfilename))
 							if orf_counter == pivot:
 								pivot = pivot + 1000
 								print "%s ORFs have been found!" % orf_counter
@@ -171,10 +172,13 @@ def blasting(protfile, protdb):
 
 	"""
 	cmd = "blastall -p blastp -d protdb -i protfile -e 1E-20 -m 9 -o %s.blast -n T" % protfile.strip().split(".")[0]
+	print "the output file is: %s.blast" % protfile.strip().split(".")[0]
+	print "the proteins file is %s: " % protfile
+	print "the database is: %s" % protdb
 	print "Blast in process..."
 	p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	p.wait()
-	return 1
+	return "%s.blast" % protfile.strip().split(".")[0]
 
 def doc_help():
 	"""
