@@ -2,6 +2,7 @@
 
 
 import sys
+import subprocess
 
 def extract_seq(datafilename, spath, outpufile):
 	"""
@@ -137,7 +138,7 @@ def find_orfs(seqfilename, gcfilename, spath, sizep, scodon, ecodon):
 	POFH.close()
 	FOFH.close()
 	print "Total ORFs found were %s" % orf_counter
-	return 1
+	return "%s%s_prot.fasta" % (spath, seqfilename.split(".")[0])
 
 
 def format_seq(seqfilename, spath):
@@ -169,7 +170,11 @@ def blasting(protfile, protdb):
 	"""
 
 	"""
-
+	cmd = "blastall -p blastp -d protdb -i protfile -e 1E-20 -m 9 -o %s.blast -n T" % protfile.strip().split(".")[0]
+	print "Blast in process..."
+	p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	p.wait()
+	return 1
 
 def doc_help():
 	"""
