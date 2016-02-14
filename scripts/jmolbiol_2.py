@@ -180,6 +180,8 @@ def blasting(protfile, protdb):
 	p.wait()
 	return "%s.blast" % protfile.strip().split(".")[0]
 
+def 
+
 def doc_help():
 	"""
 
