@@ -5,7 +5,8 @@ from jmolbiol_2 import format_seq, \
 					get_gc, \
 					translate, \
 					find_orfs, \
-					blasting
+					blasting, \
+					parsingBlastResult
 
 test = format_seq(sys.argv[2], sys.argv[1])
 if test != 1:
@@ -25,3 +26,7 @@ protfile = find_orfs(sys.argv[2], sys.argv[3], sys.argv[1], int(sys.argv[4]), \
 scodon, ecodon)
 print protfile
 
+blast_filename = blasting(protfile, sys.argv[7])
+
+filter_filename = parsingBlastResult(blast_filename, 80)
+print filter_filename
